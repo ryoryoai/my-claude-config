@@ -4,7 +4,6 @@
     "enabled": true,
     "paths": [
       ".claude/skills",
-      ".claude/skills/ui-ux-pro-max/.claude/skills",
       "bootstrap/.claude/skills"
     ]
   },

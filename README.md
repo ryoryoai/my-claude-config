@@ -30,7 +30,17 @@ git add bootstrap
 git commit -m "chore: update bootstrap"
 ```
 
-## Adding Private Skills
+## Adding Skills
+
+### Via CLI (recommended)
+
+```bash
+# UI/UX Pro Max skill
+npm install -g uipro-cli
+uipro init --ai claude
+```
+
+### Manual
 
 Place `.md` files in `.claude/skills/` with YAML frontmatter:
 
