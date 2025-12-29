@@ -10,8 +10,7 @@ git clone git@github.com:ryoryoai/my-claude-config.git
 cd my-claude-config
 
 # 2. Install base configuration
-npm install -g claude-bootstrap-cli
-claude-bootstrap init --force
+npx create-ccb --force
 
 # 3. Install additional skills (optional)
 npm install -g uipro-cli
@@ -49,9 +48,8 @@ path: /my-skill
 ## Update
 
 ```bash
-# Update bootstrap
-claude-bootstrap update
-claude-bootstrap init --force
+# Update bootstrap (always latest via npx)
+npx create-ccb --force
 
 # Update UI/UX Pro Max
 uipro update
