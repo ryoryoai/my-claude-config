@@ -2,45 +2,35 @@
 
 Private Claude Code configuration with custom skills and agents.
 
-## Structure
-
-```
-.
-├─ bootstrap/           # ClaudeCodeBootstrap (submodule)
-└─ .claude/
-   ├─ skills/           # Private skills
-   ├─ agents/           # Private agents
-   └─ settings.json     # Unified settings
-```
-
 ## Setup
 
 ```bash
-git clone --recursive git@github.com:ryoryoai/my-claude-config.git
+# 1. Clone this repo
+git clone git@github.com:ryoryoai/my-claude-config.git
 cd my-claude-config
-```
 
-## Update Bootstrap
+# 2. Install base configuration
+npm install -g claude-bootstrap-cli
+claude-bootstrap init --force
 
-```bash
-cd bootstrap
-git pull origin main
-cd ..
-git add bootstrap
-git commit -m "chore: update bootstrap"
-```
-
-## Adding Skills
-
-### Via CLI (recommended)
-
-```bash
-# UI/UX Pro Max skill
+# 3. Install additional skills (optional)
 npm install -g uipro-cli
 uipro init --ai claude
 ```
 
-### Manual
+## Structure
+
+```
+.
+└─ .claude/
+   ├─ skills/           # Skills (from CLI + private)
+   ├─ agents/           # Agents (from CLI + private)
+   ├─ commands/         # Commands (from CLI)
+   ├─ hooks/            # Hooks (from CLI)
+   └─ settings.json     # Settings
+```
+
+## Adding Private Skills
 
 Place `.md` files in `.claude/skills/` with YAML frontmatter:
 
@@ -54,4 +44,16 @@ path: /my-skill
 # Instructions
 
 ...
+```
+
+## Update
+
+```bash
+# Update bootstrap
+claude-bootstrap update
+claude-bootstrap init --force
+
+# Update UI/UX Pro Max
+uipro update
+uipro init --ai claude
 ```

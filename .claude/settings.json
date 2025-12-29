@@ -3,19 +3,13 @@
   "skills": {
     "enabled": true,
     "paths": [
-      ".claude/skills",
-      "bootstrap/.claude/skills"
+      ".claude/skills"
     ]
   },
   "agents": {
     "enabled": true,
     "paths": [
-      ".claude/agents",
-      "bootstrap/.claude/agents"
+      ".claude/agents"
     ]
-  },
-  "hooks": {
-    "pre_tool_use": "bootstrap/hooks/pre_tool_use.py",
-    "post_tool_use": "bootstrap/hooks/post_tool_use.py"
   }
 }
