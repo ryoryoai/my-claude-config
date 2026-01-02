@@ -144,6 +144,61 @@ A self-referential loop system that intercepts session exit and feeds prompts ba
 
 ---
 
+## Claude Agent SDK
+
+Build autonomous AI agents with Claude. / Claude で自律的 AI エージェントを構築。
+
+### Setup / セットアップ
+
+```bash
+npm install
+```
+
+### Usage / 使い方
+
+```bash
+# Run example agent / サンプルエージェント実行
+npm run agent
+
+# Run with custom prompt / カスタムプロンプトで実行
+npx tsx agents/example-agent.ts "Find all TODO comments"
+
+# Run code reviewer / コードレビュー実行
+npm run agent:review
+npx tsx agents/code-reviewer.ts ./src
+```
+
+### Create Custom Agent / カスタムエージェント作成
+
+```typescript
+// agents/my-agent.ts
+import { query } from "@anthropic-ai/claude-code";
+
+for await (const message of query({
+  prompt: "Your task here",
+  options: {
+    allowedTools: ["Read", "Edit", "Bash", "Glob", "Grep"],
+  },
+})) {
+  // Handle messages
+}
+```
+
+### Available Tools / 利用可能なツール
+
+| Tool | Description |
+|------|-------------|
+| `Read` | Read files / ファイル読み込み |
+| `Write` | Create files / ファイル作成 |
+| `Edit` | Modify files / ファイル編集 |
+| `Bash` | Run commands / コマンド実行 |
+| `Glob` | Find files by pattern / パターンでファイル検索 |
+| `Grep` | Search contents / 内容検索 |
+| `WebSearch` | Search the web / Web検索 |
+| `WebFetch` | Fetch web pages / Webページ取得 |
+
+---
+
 ## Adding Private Skills / プライベートスキル追加
 
 Place skill directories in `.claude/skills/` with a `SKILL.md` file:

@@ -23,3 +23,7 @@ credentials.json
 # MCP config (contains secrets)
 .claude/mcp.json
 .cursor/mcp.json
+
+# Node.js
+node_modules/
+package-lock.json
