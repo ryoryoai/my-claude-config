@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server"],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-playwright"]
+    },
+    "serena": {
+      "command": "npx",
+      "args": ["-y", "serena-mcp-server"],
+      "env": {
+        "SERENA_CONFIG_PATH": "${SERENA_CONFIG_PATH}"
+      }
+    }
+  }
+}

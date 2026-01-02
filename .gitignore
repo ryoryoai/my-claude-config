@@ -19,3 +19,7 @@ credentials.json
 
 # MCP server state
 .serena/
+
+# MCP config (contains secrets)
+.claude/mcp.json
+.cursor/mcp.json
