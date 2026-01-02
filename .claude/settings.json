@@ -1,5 +1,5 @@
 {
-  "$schema": "https://claude.ai/settings-schema.json",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "skills": {
     "enabled": true,
     "paths": [
@@ -10,6 +10,19 @@
     "enabled": true,
     "paths": [
       ".claude/agents"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/ralph-wiggum/stop-hook.sh"
+          }
+        ]
+      }
     ]
   }
 }
