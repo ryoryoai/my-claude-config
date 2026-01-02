@@ -16,3 +16,6 @@ Thumbs.db
 .env
 *.key
 credentials.json
+
+# MCP server state
+.serena/
