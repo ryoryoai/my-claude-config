@@ -7,7 +7,7 @@
  *   npx tsx agents/example-agent.ts
  */
 
-import { query } from "@anthropic-ai/claude-code";
+import { query } from "@anthropic-ai/claude-agent-sdk";
 
 async function main() {
   const prompt = process.argv[2] || "What files are in this directory? List them briefly.";

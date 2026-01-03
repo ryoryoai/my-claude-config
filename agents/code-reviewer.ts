@@ -8,7 +8,7 @@
  *   npx tsx agents/code-reviewer.ts [path]
  */
 
-import { query } from "@anthropic-ai/claude-code";
+import { query } from "@anthropic-ai/claude-agent-sdk";
 
 async function main() {
   const targetPath = process.argv[2] || ".";

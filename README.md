@@ -172,7 +172,7 @@ npx tsx agents/code-reviewer.ts ./src
 
 ```typescript
 // agents/my-agent.ts
-import { query } from "@anthropic-ai/claude-code";
+import { query } from "@anthropic-ai/claude-agent-sdk";
 
 for await (const message of query({
   prompt: "Your task here",
