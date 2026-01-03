@@ -1,0 +1,158 @@
+{
+  "testSuite": "agent-selection",
+  "description": "MainAgentがサブエージェントを正しく選択できるかのテスト",
+  "cases": [
+    {
+      "id": "A1",
+      "category": "single-select",
+      "input": "Next.jsでブログアプリを作りたい",
+      "expected": ["nextjs-developer"],
+      "acceptAlternative": false,
+      "note": "フレームワーク明示"
+    },
+    {
+      "id": "A2",
+      "category": "single-select",
+      "input": "Pythonで画像処理スクリプトを書いて",
+      "expected": ["python-pro"],
+      "acceptAlternative": false,
+      "note": "言語明示"
+    },
+    {
+      "id": "A3",
+      "category": "single-select",
+      "input": "Terraformでマルチリージョン構成を作りたい",
+      "expected": ["terraform-engineer"],
+      "acceptAlternative": false,
+      "note": "ツール明示"
+    },
+    {
+      "id": "A4",
+      "category": "single-select",
+      "input": "このコードをレビューして",
+      "expected": ["code-reviewer"],
+      "acceptAlternative": false,
+      "note": "タスク明示"
+    },
+    {
+      "id": "A5",
+      "category": "single-select",
+      "input": "CIが落ちてる、直して",
+      "expected": ["ci-cd-fixer"],
+      "acceptAlternative": false,
+      "note": "緊急対応"
+    },
+    {
+      "id": "A6",
+      "category": "single-select",
+      "input": "エラーが出て動かない",
+      "expected": ["error-recovery"],
+      "acceptAlternative": false,
+      "note": "障害対応"
+    },
+    {
+      "id": "A7",
+      "category": "single-select",
+      "input": "RAGシステムを設計したい",
+      "expected": ["llm-architect"],
+      "acceptAlternative": false,
+      "note": "AI専門"
+    },
+    {
+      "id": "B1",
+      "category": "ambiguous",
+      "input": "フロントエンドを作りたい",
+      "expected": ["nextjs-developer", "typescript-pro"],
+      "acceptAlternative": true,
+      "note": "追加質問するか確認"
+    },
+    {
+      "id": "B2",
+      "category": "ambiguous",
+      "input": "インフラを構築したい",
+      "expected": ["kubernetes-specialist", "terraform-engineer"],
+      "acceptAlternative": true,
+      "note": "文脈判断"
+    },
+    {
+      "id": "B3",
+      "category": "ambiguous",
+      "input": "コードを改善したい",
+      "expected": ["refactoring-specialist", "code-reviewer"],
+      "acceptAlternative": true,
+      "note": "タスク種別判断"
+    },
+    {
+      "id": "B4",
+      "category": "ambiguous",
+      "input": "APIを作りたい",
+      "expected": ["nextjs-developer", "python-pro"],
+      "acceptAlternative": true,
+      "note": "技術選定質問"
+    },
+    {
+      "id": "C1",
+      "category": "multi-agent",
+      "input": "Next.jsアプリをK8sにデプロイしたい",
+      "expected": ["nextjs-developer", "kubernetes-specialist"],
+      "expectedOrder": true,
+      "note": "順序性が重要"
+    },
+    {
+      "id": "C2",
+      "category": "multi-agent",
+      "input": "新規プロジェクトをセットアップしてレビューして",
+      "expected": ["project-scaffolder", "code-reviewer"],
+      "expectedOrder": true,
+      "note": "依存関係"
+    },
+    {
+      "id": "C3",
+      "category": "multi-agent",
+      "input": "LLMアプリのプロンプトを最適化したい",
+      "expected": ["llm-architect", "prompt-engineer"],
+      "expectedOrder": false,
+      "note": "協調（順序不問）"
+    },
+    {
+      "id": "C4",
+      "category": "multi-agent",
+      "input": "既存コードをリファクタしてCIを通して",
+      "expected": ["refactoring-specialist", "ci-cd-fixer"],
+      "expectedOrder": true,
+      "note": "連鎖"
+    },
+    {
+      "id": "D1",
+      "category": "edge-case",
+      "input": "Rustでシステムを作りたい",
+      "expected": [],
+      "expectQuestion": true,
+      "note": "該当エージェントなし→汎用対応 or 質問"
+    },
+    {
+      "id": "D2",
+      "category": "edge-case",
+      "input": "なんかいい感じにして",
+      "expected": [],
+      "expectQuestion": true,
+      "note": "曖昧すぎる→質問必須"
+    },
+    {
+      "id": "D3",
+      "category": "edge-case",
+      "input": "TypeScriptでNext.jsアプリを",
+      "expected": ["nextjs-developer"],
+      "acceptAlternative": false,
+      "note": "2つ該当→優先度判断 (nextjs > ts-pro)"
+    },
+    {
+      "id": "D4",
+      "category": "edge-case",
+      "input": "MCPサーバーをPythonで作りたい",
+      "expected": ["mcp-developer", "python-pro"],
+      "expectedOrder": false,
+      "note": "組み合わせ"
+    }
+  ]
+}
