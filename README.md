@@ -334,6 +334,54 @@ Filesystem MCPサーバーを追加する場合は最小権限の原則に従っ
 
 ---
 
+## Advanced: Parallel Claude Workflow / 並列Claude活用
+
+For maximum efficiency, run multiple Claude instances in parallel.
+
+最大効率のために、複数のClaudeインスタンスを並列実行。
+
+### Setup / セットアップ
+
+```bash
+# Terminal 1-5: CLI instances for different tasks
+# ターミナル1-5: 異なるタスク用のCLIインスタンス
+claude  # Each in a different tmux pane or terminal tab
+
+# Web instances: claude.ai/code with teleport
+# Webインスタンス: claude.ai/code でテレポート使用
+```
+
+### Recommended Workflow / 推奨ワークフロー
+
+| Instance | Task Type | Example |
+|----------|-----------|---------|
+| Terminal 1 | Main development | Feature implementation |
+| Terminal 2 | Testing | Run tests, fix failures |
+| Terminal 3 | Code review | Review changes in parallel |
+| Terminal 4 | Documentation | Update docs, comments |
+| Terminal 5 | DevOps | CI/CD, deployment |
+| Web 1-5 | Research | API docs, troubleshooting |
+
+### Tips / ヒント
+
+1. **Use Plan mode first** - Always start complex tasks with `/plan-with-agent`
+2. **Leverage subagents** - Use specialized agents for specific tasks
+3. **PostToolUse hooks** - Auto-format files after edits
+4. **System notifications** - Get alerts when long tasks complete
+5. **Ralph loop** - For iterative improvement tasks
+
+### Notification Setup (macOS) / 通知設定 (macOS)
+
+```bash
+# Add to your shell profile
+# シェルプロファイルに追加
+claude_notify() {
+  claude "$@" && osascript -e 'display notification "Task complete" with title "Claude Code"'
+}
+```
+
+---
+
 ## License / ライセンス
 
 Personal configuration repository. Public for AI reference purposes.
