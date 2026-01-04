@@ -6,6 +6,18 @@
 
 set -euo pipefail
 
+# Check dependencies - fail safe (allow exit) if missing
+if ! command -v jq &>/dev/null; then
+  echo "⚠️  Ralph loop: jq not installed - loop disabled for safety" >&2
+  echo "   Install with: brew install jq" >&2
+  exit 0
+fi
+
+if ! command -v perl &>/dev/null; then
+  echo "⚠️  Ralph loop: perl not installed - loop disabled for safety" >&2
+  exit 0
+fi
+
 # Read hook input from stdin (advanced stop hook API)
 HOOK_INPUT=$(cat)
 
@@ -157,9 +169,13 @@ mv "$TEMP_FILE" "$RALPH_STATE_FILE"
 
 # Build system message with iteration count and completion promise info
 if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
-  SYSTEM_MSG="🔄 Ralph iteration $NEXT_ITERATION | To stop: output <promise>$COMPLETION_PROMISE</promise> (ONLY when statement is TRUE - do not lie to exit!)"
+  SYSTEM_MSG="🔄 Ralph iteration $NEXT_ITERATION/$MAX_ITERATIONS | To stop: output <promise>$COMPLETION_PROMISE</promise> (ONLY when TRUE)"
 else
-  SYSTEM_MSG="🔄 Ralph iteration $NEXT_ITERATION | No completion promise set - loop runs infinitely"
+  if [[ $MAX_ITERATIONS -gt 0 ]]; then
+    SYSTEM_MSG="🔄 Ralph iteration $NEXT_ITERATION/$MAX_ITERATIONS | No completion promise - will stop at max iterations"
+  else
+    SYSTEM_MSG="🔄 Ralph iteration $NEXT_ITERATION | ⚠️ UNLIMITED MODE - run /cancel-ralph to stop"
+  fi
 fi
 
 # Output JSON to block the stop and feed prompt back

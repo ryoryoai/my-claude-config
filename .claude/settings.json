@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/ralph-wiggum/stop-hook.sh"
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/.claude/hooks/ralph-wiggum/stop-hook.sh"
           }
         ]
       }

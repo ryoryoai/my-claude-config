@@ -7,7 +7,8 @@ set -euo pipefail
 
 # Parse arguments
 PROMPT_PARTS=()
-MAX_ITERATIONS=0
+# Default to 5 iterations for safety (prevent infinite loops)
+MAX_ITERATIONS=5
 COMPLETION_PROMISE="null"
 
 # Parse options and positional arguments
@@ -24,7 +25,7 @@ ARGUMENTS:
   PROMPT...    Initial prompt to start the loop (can be multiple words without quotes)
 
 OPTIONS:
-  --max-iterations <n>           Maximum iterations before auto-stop (default: unlimited)
+  --max-iterations <n>           Maximum iterations before auto-stop (default: 5)
   --completion-promise '<text>'  Promise phrase (USE QUOTES for multi-word)
   -h, --help                     Show this help message
 
@@ -42,12 +43,14 @@ DESCRIPTION:
 EXAMPLES:
   /ralph-loop Build a todo API --completion-promise 'DONE' --max-iterations 20
   /ralph-loop --max-iterations 10 Fix the auth bug
-  /ralph-loop Refactor cache layer  (runs forever)
+  /ralph-loop Refactor cache layer  (default: stops after 5 iterations)
   /ralph-loop --completion-promise 'TASK COMPLETE' Create a REST API
+  /ralph-loop --max-iterations 0 Dangerous infinite mode  (NOT RECOMMENDED)
 
 STOPPING:
-  Only by reaching --max-iterations or detecting --completion-promise
-  No manual stop - Ralph runs infinitely by default!
+  - Automatic: --max-iterations reached (default: 5) or --completion-promise detected
+  - Manual: Run /cancel-ralph
+  - Emergency: Delete .claude/ralph-loop.local.md
 
 MONITORING:
   # View current iteration:
@@ -154,17 +157,15 @@ cat <<EOF
 🔄 Ralph loop activated in this session!
 
 Iteration: 1
-Max iterations: $(if [[ $MAX_ITERATIONS -gt 0 ]]; then echo $MAX_ITERATIONS; else echo "unlimited"; fi)
-Completion promise: $(if [[ "$COMPLETION_PROMISE" != "null" ]]; then echo "${COMPLETION_PROMISE//\"/} (ONLY output when TRUE - do not lie!)"; else echo "none (runs forever)"; fi)
+Max iterations: $(if [[ $MAX_ITERATIONS -gt 0 ]]; then echo $MAX_ITERATIONS; else echo "⚠️  UNLIMITED (dangerous!)"; fi)
+Completion promise: $(if [[ "$COMPLETION_PROMISE" != "null" ]]; then echo "${COMPLETION_PROMISE//\"/} (ONLY output when TRUE - do not lie!)"; else echo "none"; fi)
 
 The stop hook is now active. When you try to exit, the SAME PROMPT will be
 fed back to you. You'll see your previous work in files, creating a
 self-referential loop where you iteratively improve on the same task.
 
 To monitor: head -10 .claude/ralph-loop.local.md
-
-⚠️  WARNING: This loop cannot be stopped manually! It will run infinitely
-    unless you set --max-iterations or --completion-promise.
+To cancel:  /cancel-ralph
 
 🔄
 EOF

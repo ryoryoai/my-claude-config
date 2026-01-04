@@ -1,8 +1,12 @@
 # my-claude-config
 
-Private Claude Code configuration with custom skills, agents, and automation hooks.
+Personal Claude Code configuration with custom skills, agents, and automation hooks.
 
 個人用 Claude Code 設定リポジトリ。カスタムスキル、エージェント、自動化フックを含みます。
+
+> **Note**: This repository is **public** for AI visibility and reference, but is intended for personal use. Not designed as a reusable template.
+>
+> **注意**: このリポジトリはAI参照用に**Public**ですが、個人利用を想定しています。再利用可能なテンプレートとしての設計ではありません。
 
 ---
 
@@ -113,11 +117,31 @@ A self-referential loop system that intercepts session exit and feeds prompts ba
 
 セッション終了を傍受し、同じプロンプトを再入力して反復改善を行う自己参照ループシステム。
 
+### ⚠️ Safety / 安全性
+
+**You must specify at least one stop condition** to prevent infinite loops:
+
+**無限ループを防ぐため、少なくとも1つの停止条件を指定してください：**
+
+- `--max-iterations N` - Required unless using completion-promise
+- `--completion-promise 'TEXT'` - Required unless using max-iterations
+
+If neither is specified, the loop defaults to **5 iterations** as a safety measure.
+
+どちらも指定しない場合、安全策として**5回**でループが停止します。
+
 ### Usage / 使い方
 
 ```bash
-# Start a loop / ループ開始
+# Recommended: Always set a limit / 推奨: 必ず制限を設定
 /ralph-loop Build a REST API --max-iterations 20 --completion-promise 'DONE'
+
+# With max iterations only / 最大回数のみ
+/ralph-loop Fix the auth bug --max-iterations 10
+
+# With completion promise only (uses default max of 5)
+# completion promise のみ（デフォルト最大5回）
+/ralph-loop Refactor code --completion-promise 'All tests passing'
 
 # Cancel active loop / ループキャンセル
 /cancel-ralph
@@ -125,10 +149,20 @@ A self-referential loop system that intercepts session exit and feeds prompts ba
 
 ### Options / オプション
 
-| Option | Description |
-|--------|-------------|
-| `--max-iterations N` | Stop after N iterations / N回で停止 |
-| `--completion-promise 'TEXT'` | Stop when `<promise>TEXT</promise>` is output / 出力時に停止 |
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--max-iterations N` | Stop after N iterations / N回で停止 | 5 |
+| `--completion-promise 'TEXT'` | Stop when `<promise>TEXT</promise>` is output | none |
+
+### How to Stop / 停止方法
+
+1. **Automatic**: Loop stops at max iterations or when completion promise is output
+2. **Manual**: Run `/cancel-ralph` to remove state file
+3. **Emergency**: Delete `.claude/ralph-loop.local.md` manually
+
+1. **自動**: 最大回数到達または completion promise 出力時
+2. **手動**: `/cancel-ralph` でステートファイルを削除
+3. **緊急**: `.claude/ralph-loop.local.md` を手動削除
 
 ### How it works / 動作原理
 
@@ -237,8 +271,71 @@ uipro init --ai claude
 
 ---
 
-## License
+## Prerequisites / 前提条件
 
-Private repository. Not for redistribution.
+The following tools are required for full functionality:
 
-プライベートリポジトリ。再配布不可。
+以下のツールが完全な機能に必要です：
+
+| Tool | Required For | Install |
+|------|--------------|---------|
+| `jq` | Ralph loop, hooks | `brew install jq` |
+| `perl` | Ralph loop completion detection | Pre-installed on macOS |
+| `node` / `npm` | MCP servers, Agent SDK | [nodejs.org](https://nodejs.org) |
+
+---
+
+## Security / セキュリティ
+
+**IMPORTANT**: This repository contains configuration templates only. Secrets must be managed locally.
+
+**重要**: このリポジトリには設定テンプレートのみ含まれます。シークレットはローカルで管理してください。
+
+### Never Commit / コミットしてはいけないもの
+
+- `.env`, `.env.*` - Environment variables / 環境変数
+- `.claude/mcp.json` - MCP config with tokens / トークンを含むMCP設定
+- `.cursor/mcp.json` - Cursor MCP config
+- `*.key`, `credentials.json` - API keys and credentials / APIキー・認証情報
+
+### MCP Configuration / MCP設定
+
+```bash
+# Copy the example and edit with your values
+# exampleをコピーして自分の値で編集
+cp .claude/mcp.json.example .claude/mcp.json
+
+# Edit the file - replace ${SUPABASE_ACCESS_TOKEN} etc. with actual values
+# ファイルを編集 - ${SUPABASE_ACCESS_TOKEN} 等を実際の値に置換
+```
+
+### Filesystem MCP Safety / Filesystem MCP の安全性
+
+If adding a filesystem MCP server, follow the principle of least privilege:
+
+Filesystem MCPサーバーを追加する場合は最小権限の原則に従ってください：
+
+```json
+{
+  "filesystem": {
+    "command": "npx",
+    "args": [
+      "-y", "@anthropic-ai/mcp-server-filesystem",
+      "/path/to/your/project"  // Only allow specific directories
+    ]
+  }
+}
+```
+
+**DO NOT** use:
+- `--dangerously-skip-permissions` flag
+- Home directory (`~` or `/Users/xxx`)
+- Root (`/`)
+
+---
+
+## License / ライセンス
+
+Personal configuration repository. Public for AI reference purposes.
+
+個人設定リポジトリ。AI参照用にPublic公開。

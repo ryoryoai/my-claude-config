@@ -12,10 +12,13 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Secrets
+# Secrets / Environment
 .env
+.env.*
 *.key
 credentials.json
+*.pem
+*.p12
 
 # MCP server state
 .serena/
@@ -24,6 +27,14 @@ credentials.json
 .claude/mcp.json
 .cursor/mcp.json
 
+# Ralph loop local state (session-specific)
+.claude/ralph-loop.local.md
+
 # Node.js
 node_modules/
 package-lock.json
+
+# Logs and cache
+*.log
+.cache/
+tmp/
